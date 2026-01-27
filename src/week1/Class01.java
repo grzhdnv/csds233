@@ -1,6 +1,9 @@
+package week1;
+
 import java.util.Arrays;
 
-public class Class01 {
+public class
+Class01 {
 
     /* 01
     Write a Java program that loops through the numbers 1 to 10 (inclusive).
@@ -22,6 +25,8 @@ public class Class01 {
     arrayDoubler should take an array of floating point numbers as an
     argument and should change the values in that array to twice the current
     values in the array.
+
+    NOTE: for (e: x) loop creates copies
      */
     public static void doubleArray(double[] arr) {
         for (int i = 0; i < arr.length; i++) {
@@ -35,7 +40,7 @@ public class Class01 {
     their arguments. Print out the values of the variables again. What
     observations can you make about the behavior?
 
-    [Java creates copies of primitive type arguments, so outside values are not changed.]
+    NOTE: [Java creates copies of primitive type arguments, so outside values are not changed.]
      */
     public static void swap(int a, int b) {
         int temp = a;
@@ -50,7 +55,7 @@ public class Class01 {
     Print out the values in the array again. What observations can you make
     about the behavior?
 
-    [Java uses reference to object passed as parameter, and functions can change values of the object.]
+    NOTE: [Java uses reference to object passed as parameter, and functions can change values of the object.]
      */
     public static void swapAr(int[] ar, int ixa, int ixb){
         int temp = ar[ixa];
@@ -77,11 +82,15 @@ public class Class01 {
         • 1 <= nums.length <= 1000
         • -10^6 <= nums[i] <= 10^6
      */
-    public static void runningSum(int[] arr) {
+    public static int[] runningSum(int[] arr) {
+        int[] result = new int[arr.length];
+        result[0] = arr[0];
+        // TODO: fix with return array
         if (arr.length > 1)
             for (int i = 1; i < arr.length; i++) {
-                arr[i] =  arr[i-1] + arr[i];
+                result[i] =  result[i-1] + arr[i];
             }
+        return result;
     }
 
     public static void main(String[] args) {
