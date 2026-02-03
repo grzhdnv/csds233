@@ -79,6 +79,7 @@ public class IntArrayList {
         for (int i = 0; i < items.numItems; i++)
             data[numItems + i] = items.data[i];
         numItems += items.numItems;
+        // could use System.arraycopy()
         return true;
     }
 
@@ -88,6 +89,9 @@ public class IntArrayList {
             int[] newData = new int[newSize];                       // create new data array
             for (int i = 0; i < numItems; i++)                      // copy existing data to new array
                 newData[i] = data[i];
+
+            // could also do:
+            // data = Array.copyOf(data, newSize)
             data = newData;
         }
     }
