@@ -2,6 +2,8 @@ package week3;
 
 public class NodeTest {
 
+//    public void insertLast(IntNode node)
+
     public static void main(String[] args) {
         IntNode head = new IntNode(42);
         System.out.println(head.getData());

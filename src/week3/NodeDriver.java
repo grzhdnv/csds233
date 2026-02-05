@@ -7,18 +7,25 @@ package week3;
 public class NodeDriver {
 
     /**
-     * Insert node at the front of the list
+     * Insert node at the end of the list
      * @param head first node of the list
      * @param item data value to insert
-     * @return new inserted first node
+     * @return head node
      */
     public static IntNode insertNode(IntNode head, int item) {
 
-        if (head == null) {
-            return new IntNode(item);
+        IntNode pos = head;
+
+        while (pos != null && pos.getNext() != null) {
+            pos = pos.getNext();
         }
 
-        return new IntNode(item, head);
+        if (pos != null)
+            pos.setNext(new IntNode(item));
+        else
+            head = new IntNode(item);
+
+        return head;
     }
 
     /**
@@ -26,13 +33,23 @@ public class NodeDriver {
      * @param head first node
      */
     public static void printList(IntNode head) {
-        if (head != null) {
-                System.out.println(head.getData());
-            while (head.getNext() != null) {
-                System.out.println(head.getNext().getData());
-                head = head.getNext();
+//        if (head != null) {
+//                System.out.println(head.getData());
+//            while (head.getNext() != null) {
+//                System.out.println(head.getNext().getData());
+//                head = head.getNext();
+//            }
+//        }
+
+        IntNode current = head;
+        if (current != null) {
+            while (current != null) {
+                System.out.print(current.getData() + " ");
+                current = current.getNext();
             }
-        }
+            System.out.println();
+        } else
+            System.out.println("The list is empty");
     }
 
     public static void main(String[] args) {
