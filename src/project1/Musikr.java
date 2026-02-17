@@ -5,10 +5,6 @@ import org.jfugue.player.Player;
 public class Musikr {
 
     public static void test() {
-
-    }
-
-    public static void main(String... args) {
         DoubleLL<String> l = new DoubleLL<>(new DLNode<>("First"));
         l.printState();
         l.append(new DLNode<>("Second"));
@@ -19,5 +15,9 @@ public class Musikr {
         l.printState();
         l.remove();
         l.printState();
+    }
+
+    public static void main(String... args) {
+        Musikr.test();
     }
 }
