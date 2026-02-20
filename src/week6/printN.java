@@ -1,5 +1,6 @@
 package week6;
 
+// test of recursive function
 public class printN {
 
     public static void printNumbers(int count, int n) {

@@ -98,16 +98,17 @@ public class DoubleLL<T> implements Iterable<T>{
         if (getLength() == 0) {
             addToEmpty(node);
         } else {
-            node.bind(getCurrent().getNext());
+            if (getCurrent().getNext() != null)
+                node.bind(getCurrent().getNext());
             getCurrent().bind(node);
             changeLength(1);
         }
     }
 
-    public void repeatTail() {
+    public void repeatToEnd() {
         if (getLength() == 0)
             System.out.println("Error! Empty list!");
-        append(getTail());
+        append(getCurrent());
     }
 
     // removes given node
@@ -174,14 +175,36 @@ public class DoubleLL<T> implements Iterable<T>{
     }
 
     public void printState() {
-        System.out.println("Head: " + getHead().getData());
-        System.out.println("Tail: " + getTail().getData());
-        System.out.println("Current: " + getCurrent().getData());
-        System.out.println("Length: " + getLength());
-        System.out.print("List nodes: ");
-        for (T item : this) {
-            System.out.print(item + " ");
+        if (getLength() > 0) {
+            System.out.println("Head: " + getHead().getData());
+            System.out.println("Tail: " + getTail().getData());
+            System.out.println("Current: " + getCurrent().getData());
+            System.out.println("Length: " + getLength());
+            System.out.print("List nodes: ");
+            for (T item : this) {
+                System.out.print(item + " ");
+            }
         }
+        else
+            System.out.println("Empty structure");
         System.out.println("\n");
+    }
+
+    public void printData() {
+        if (getLength() > 0) {
+            DLNode<T> current = getHead();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < getLength(); i++) {
+                if (current.equals(getCurrent())) {
+                    sb.append(i+1).append(" *** ").append(current.getData()).append(" *** | ");
+                } else {
+                    sb.append(i+1).append(" ").append(current.getData()).append(" | ");
+                }
+                current = current.getNext();
+            }
+            System.out.println(sb.toString());
+        }
+        else
+            System.out.println("The composition is empty! Add a phrase to start.");
     }
 }
