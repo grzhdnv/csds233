@@ -3,17 +3,16 @@ package project1;
 import java.util.Iterator;
 
 /**
- * Class implementing a double linked list data structure
+ * Class implementing a doubly linked list
  * @param <T> Generic for data type
  * @author Mikhail Grazhdanov
  */
 public class DoubleLL<T> implements Iterable<T> {
 
-    // Fields to store pointers
+    // Fields to store pointers and track list length
     private DLNode<T> head;
     private DLNode<T> tail;
     private DLNode<T> current;
-    // Field to track length of the list
     private int length;
 
     // --- constructors --- //
