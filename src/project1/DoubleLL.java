@@ -2,26 +2,40 @@ package project1;
 
 import java.util.Iterator;
 
-public class DoubleLL<T> implements Iterable<T>{
+/**
+ * Class implementing a double linked list data structure
+ * @param <T> Generic for data type
+ * @author Mikhail Grazhdanov
+ */
+public class DoubleLL<T> implements Iterable<T> {
 
+    // Fields to store pointers
     private DLNode<T> head;
     private DLNode<T> tail;
     private DLNode<T> current;
-    int length;
+    // Field to track length of the list
+    private int length;
 
     // --- constructors --- //
 
+    /**
+     * Initialize an empty list
+     */
     public DoubleLL() {
         head = tail = current = null;
         length = 0;
     }
 
+    /**
+     * Initialize a list with a node
+     * @param node Node
+     */
     public DoubleLL(DLNode<T> node) {
         head = tail = current = node;
         length = 1;
     }
 
-    // --- getters and setters --- //
+    // --- getters and setters and modifiers for class fields--- //
 
     public void setHead(DLNode<T> head) {
         this.head = head;
@@ -61,19 +75,20 @@ public class DoubleLL<T> implements Iterable<T>{
         return length;
     }
 
+    /**
+     * Update length of the list
+     * @param i Increment, expected 1 or -1
+     */
     public void changeLength(int i) {
         length += i;
     }
 
     // --- adding and removing nodes --- //
 
-    private void addToEmpty(DLNode<T> node) {
-        setHead(node);
-        setTail(node);
-        setCurrent(node);
-        changeLength(1);
-    }
-
+    /**
+     * Add node to the end of the list
+     * @param node Node to add
+     */
     public void append(DLNode<T> node) {
         if (getLength() == 0) {
             addToEmpty(node);
@@ -84,6 +99,10 @@ public class DoubleLL<T> implements Iterable<T>{
         }
     }
 
+    /**
+     * Add node to the start of the list
+     * @param node Node to add
+     */
     public void prepend(DLNode<T> node) {
         if (getLength() == 0) {
             addToEmpty(node);
@@ -94,6 +113,10 @@ public class DoubleLL<T> implements Iterable<T>{
         }
     }
 
+    /**
+     * Insert node after the current node
+     * @param node Node to insert
+     */
     public void insert(DLNode<T> node) {
         if (getLength() == 0) {
             addToEmpty(node);
@@ -105,13 +128,56 @@ public class DoubleLL<T> implements Iterable<T>{
         }
     }
 
+    /**
+     * Insert a copy of a current node to the end of the list
+     */
     public void repeatToEnd() {
         if (getLength() == 0)
             System.out.println("Error! Empty list!");
-        append(getCurrent());
+        else
+            append(getCurrent());
     }
 
-    // removes given node
+
+    /**
+     * Remove current node
+     */
+    public void remove() {
+        removeNode(getCurrent());
+    }
+
+    /**
+     * Remove node at given position
+     * @param position Position of node to remove
+     */
+    public void removeAt(int position) {
+        DLNode<T> toRemove = getHead();
+        int i = 1;
+        while (i < position) {
+            toRemove = toRemove.getNext();
+            i++;
+        }
+        removeNode(toRemove);
+        changeLength(-1);
+    }
+
+    // --- Helper Functions --- //
+
+    /**
+     * Utility function, add node when list is empty
+     * @param node Node to add
+     */
+    private void addToEmpty(DLNode<T> node) {
+        setHead(node);
+        setTail(node);
+        setCurrent(node);
+        changeLength(1);
+    }
+
+    /**
+     * Utility function, handle removal logic
+     * @param nodeToRemove Node to remove
+     */
     private void removeNode(DLNode<T> nodeToRemove) {
         if (!nodeToRemove.hasPrevious() && !nodeToRemove.hasNext()) {
             setHead(null);
@@ -132,22 +198,6 @@ public class DoubleLL<T> implements Iterable<T>{
             if (getCurrent().equals(nodeToRemove))
                 setCurrent(nodeToRemove.getPrevious());
         }
-        changeLength(-1);
-    }
-
-    // removes current node
-    public void remove() {
-        removeNode(getCurrent());
-    }
-
-    public void removeAt(int position) {
-        DLNode<T> toRemove = getHead();
-        int i = 1;
-        while (i < position) {
-            toRemove = toRemove.getNext();
-            i++;
-        }
-        removeNode(toRemove);
         changeLength(-1);
     }
 
@@ -174,6 +224,10 @@ public class DoubleLL<T> implements Iterable<T>{
         }
     }
 
+
+    /**
+     * Utility (test) function, prints state of the list
+     */
     public void printState() {
         if (getLength() > 0) {
             System.out.println("Head: " + getHead().getData());
@@ -190,21 +244,51 @@ public class DoubleLL<T> implements Iterable<T>{
         System.out.println("\n");
     }
 
-    public void printData() {
+    /**
+     * Print list data with indexes (base 1).
+     */
+    public void printWithIndex() {
         if (getLength() > 0) {
             DLNode<T> current = getHead();
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < getLength(); i++) {
                 if (current.equals(getCurrent())) {
-                    sb.append(i+1).append(" *** ").append(current.getData()).append(" *** | ");
+                    sb.append(i+1).append(" * ").append(current.getData()).append(" * | ");
                 } else {
                     sb.append(i+1).append(" ").append(current.getData()).append(" | ");
                 }
                 current = current.getNext();
             }
-            System.out.println(sb.toString());
+            System.out.println(sb);
         }
         else
-            System.out.println("The composition is empty! Add a phrase to start.");
+            System.out.println("No data.");
+    }
+
+    /**
+     * Create string representation of list data
+     * @return String representation of list data
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (T data : this) {
+            sb.append(data).append(" | ");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Create string representation of list data starting from current node
+     * @return String representation of list data starting from current node
+     */
+    public String toStringFromCurrent() {
+        StringBuilder sb = new StringBuilder();
+        DLNode<T> cur = getCurrent();
+        while (cur.hasNext()) {
+            sb.append(cur.getData()).append(" | ");
+            cur = cur.getNext();
+        }
+        return sb.toString();
     }
 }

@@ -1,15 +1,20 @@
 package project1;
 
-import javax.sound.midi.SysexMessage;
-import javax.swing.*;
 import java.util.Scanner;
+import org.jfugue.player.Player;
 
-public class Musikr {
+/**
+ * Program for music composition with JFugue based on DoubleLL class
+ * @author Mikhail Grazhdanov
+ */
+public class JavaComposer {
 
+    // Fields to store program state
     public static DoubleLL<String> composition = new DoubleLL<>();
     public static Scanner scanner = new Scanner(System.in);
     public static int option;
     public static String phrase;
+    public static Player player = new Player();
 
     public static void test() {
         DoubleLL<String> l = new DoubleLL<>(new DLNode<>("First"));
@@ -24,6 +29,10 @@ public class Musikr {
         l.printState();
     }
 
+    /**
+     * Process user input in main menu
+     * @param option User option selection, 1-3 or 0 to exit
+     */
     public static void processMainMenuOption(int option) {
         switch (option) {
             case 1:
@@ -33,10 +42,25 @@ public class Musikr {
                 processEditOption(option);
                 break;
             case 2:
-                System.out.println(Menu.navigate);
+                if (composition.getLength() < 2)
+                    System.out.println("Navigation is not available. Add more phrases first.");
+                else {
+                    System.out.println(Menu.navigate);
+                    option = scanner.nextInt();
+                    scanner.nextLine();
+                    processNavigationOption(option);
+                }
                 break;
             case 3:
-                System.out.println(Menu.playback);
+                if (composition.getLength() < 1) {
+                    System.out.println("Playback is not available. Add more phrases first.");
+                }
+                else {
+                    System.out.println(Menu.playback);
+                    option = scanner.nextInt();
+                    scanner.nextLine();
+                    processPlaybackOption(option);
+                }
                 break;
             case 4:
                 composition.printState();
@@ -47,6 +71,10 @@ public class Musikr {
         }
     }
 
+    /**
+     * Process user input in edit menu
+     * @param option User option selection, 1-7 or 0 to return to main menu
+     */
     public static void processEditOption(int option) {
         switch (option) {
             case 1: // add to end
@@ -82,16 +110,59 @@ public class Musikr {
                 composition.removeAt(position);
                 break;
             case 7: // rearrange
-                composition.printData();
+                composition.printWithIndex();
                 System.out.println("Enter a phrase position to remove:");
                 break;
-            case 0:
+            case 0: break;
+        }
+    }
+
+    /**
+     * Process user input in navigation menu
+     * @param option User option selection, 1-2 or 0 to return to main menu
+     */
+    public static void processNavigationOption(int option) {
+        switch (option) {
+            case 1: // step forward
+                if (composition.getCurrent().getNext() == null)
+                    System.out.println("**Already at the last phrase!**");
+                else
+                    composition.moveForward();
                 break;
+            case 2: // step backward
+                if (composition.getCurrent().getPrevious() == null)
+                    System.out.println("**Already at the first phrase!**");
+                else
+                    composition.moveBack();
+                break;
+            case 0: break;
+        }
+    }
+
+    /**
+     * Process user input in playback menu
+     * @param option User option selection, 1-3 or 0 to return to main menu
+     */
+    public static void processPlaybackOption(int option) {
+        switch (option) {
+            case 1: // play from beginning
+                player.play(composition.toString());
+                break;
+            case 2: // play from current phrase
+                player.play(composition.toStringFromCurrent());
+                break;
+            case 3: // play specific phrase
+                player.play(composition.getCurrent().getData());
+                break;
+            case 0: break;
         }
     }
 
 
-
+    /**
+     * Program driver
+     * @param args Arguments, not used
+     */
     public static void main(String... args) {
 //        test();
 
@@ -100,8 +171,8 @@ public class Musikr {
         // Program loop
         while (true) {
             System.out.println("\n");
-            composition.printData();
-            composition.printState();
+            composition.printWithIndex(); // print composition with numbered phrases
+//            composition.printState();
 
             // --- Main menu --- //
             System.out.println(Menu.mainMenu);
@@ -113,21 +184,6 @@ public class Musikr {
                 scanner.nextLine();
             }
             processMainMenuOption(option);
-
-            // --- Edit menu --- //
-
-
-
-            // --- Navigate menu --- //
-
-
-
-
-
         }
-
-
-
-
     }
 }
