@@ -16,34 +16,21 @@ public class JavaComposer {
     public static String phrase;
     public static Player player = new Player();
 
-    public static void test() {
-        DoubleLL<String> l = new DoubleLL<>(new DLNode<>("First"));
-        l.printState();
-        l.append(new DLNode<>("Second"));
-        l.printState();
-        l.append(new DLNode<>("Third"));
-        l.printState();
-        l.moveForward();
-        l.printState();
-        l.remove();
-        l.printState();
-    }
-
     /**
      * Process user input in main menu
      * @param option User option selection, 1-3 or 0 to exit
      */
     public static void processMainMenuOption(int option) {
         switch (option) {
-            case 1:
+            case 1: // Edit menu
                 System.out.println(Menu.edit);
                 option = scanner.nextInt();
                 scanner.nextLine();
                 processEditOption(option);
                 break;
-            case 2:
+            case 2: // Navigation menu
                 if (composition.getLength() < 2)
-                    System.out.println("Navigation is not available. Add more phrases first.");
+                    System.out.println("**Navigation is not available. Add more phrases first.**");
                 else {
                     System.out.println(Menu.navigate);
                     option = scanner.nextInt();
@@ -51,9 +38,9 @@ public class JavaComposer {
                     processNavigationOption(option);
                 }
                 break;
-            case 3:
+            case 3: // Playback menu
                 if (composition.getLength() < 1) {
-                    System.out.println("Playback is not available. Add more phrases first.");
+                    System.out.println("**Playback is not available. Add more phrases first.**");
                 }
                 else {
                     System.out.println(Menu.playback);
@@ -62,10 +49,10 @@ public class JavaComposer {
                     processPlaybackOption(option);
                 }
                 break;
-            case 4:
+            case 4: // Hidden test utility, print state of the DoubleLL
                 composition.printState();
                 break;
-            case 0:
+            case 0: // exit
                 System.out.println("This was fun! Until next time!");
                 System.exit(0);
         }
@@ -93,32 +80,55 @@ public class JavaComposer {
                 composition.insert(new DLNode<>(phrase));
                 break;
             case 4: // repeat to end
-                composition.repeatToEnd();
+                if (composition.getLength() == 0)
+                    System.out.println("**No phrases to remove!**");
+                else
+                    composition.repeatToEnd();
                 break;
             case 5: // remove current
-                composition.remove();
+                if (composition.getLength() == 0)
+                    System.out.println("**No phrases to remove!**");
+                else
+                    composition.remove();
                 break;
             case 6: // remove by position
-                System.out.println("Enter a phrase position to remove:");
-                int position = scanner.nextInt();
-                scanner.nextLine();
-                while (position > composition.getLength()) {
-                    System.out.println("There are only " + composition.getLength() + " phrases in the composition! Try again:");
-                    position = scanner.nextInt();
+                if (composition.getLength() == 0)
+                    System.out.println("**No phrases to remove!**");
+                else {
+                    System.out.println("Enter a phrase position to remove:");
+                    int position = scanner.nextInt();
                     scanner.nextLine();
+                    while (position > composition.getLength()) {
+                        System.out.println("There are only " + composition.getLength() + " phrases in the composition! Try again:");
+                        position = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+                    composition.removeAt(position);
                 }
-                composition.removeAt(position);
                 break;
             case 7: // rearrange
-                composition.printWithIndex();
-                System.out.println("Enter a phrase position to remove:");
+                if (composition.getLength() < 2)
+                    System.out.println("**Rearrange not available. Add more phrases.**");
+                else {
+                    composition.printWithIndex();
+                    System.out.println("Enter a phrase position to swap with current:");
+                    int position = scanner.nextInt();
+                    scanner.nextLine();
+                    while (position > composition.getLength()) {
+                        System.out.println("There are only " + composition.getLength() + " phrases in the composition! Try again:");
+                        position = scanner.nextInt();
+                        scanner.nextLine();
+                    }
+                    composition.removeAt(position);
+                }
                 break;
             case 0: break;
         }
     }
 
     /**
-     * Process user input in navigation menu
+     * Process user input in navigation menu.
+     * @apiNote Handle less than 2 phrases before function call
      * @param option User option selection, 1-2 or 0 to return to main menu
      */
     public static void processNavigationOption(int option) {
@@ -141,6 +151,7 @@ public class JavaComposer {
 
     /**
      * Process user input in playback menu
+     * @apiNote Handle empty composition before function call
      * @param option User option selection, 1-3 or 0 to return to main menu
      */
     public static void processPlaybackOption(int option) {
@@ -151,7 +162,7 @@ public class JavaComposer {
             case 2: // play from current phrase
                 player.play(composition.toStringFromCurrent());
                 break;
-            case 3: // play specific phrase
+            case 3: // play current phrase
                 player.play(composition.getCurrent().getData());
                 break;
             case 0: break;
@@ -164,7 +175,6 @@ public class JavaComposer {
      * @param args Arguments, not used
      */
     public static void main(String... args) {
-//        test();
 
         System.out.println("Let's compose something cool!");
 

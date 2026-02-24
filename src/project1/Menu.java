@@ -1,5 +1,9 @@
 package project1;
 
+/**
+ * Class containing menus for JavaComposer
+ * @author Mikhail Grazhdanov
+ */
 public class Menu {
     public static String mainMenu = """
             
@@ -16,10 +20,10 @@ public class Menu {
             EDIT
             
             Choose an option:
-             1. Add phrase to the end
-             2. Add phrase to the beginning
+             1. Add phrase to end
+             2. Add phrase to beginning
              3. Add phrase to current position
-             4. Copy current phrase to the end
+             4. Copy current phrase to end
              5. Remove current phrase
              6. Remove specific phrase
              7. Rearrange phrases
@@ -41,6 +45,6 @@ public class Menu {
             Choose an option:
              1. Play from the beginning
              2. Play from the current phrase
-             3. Play a specific phrase
+             3. Play current phrase
              0. Return to main menu""";
 }

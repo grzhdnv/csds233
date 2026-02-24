@@ -134,7 +134,7 @@ public class DoubleLL<T> implements Iterable<T> {
         if (getLength() == 0)
             System.out.println("Error! Empty list!");
         else
-            append(getCurrent());
+            append(new DLNode<>(getCurrent().getData()));
     }
 
 
@@ -157,7 +157,6 @@ public class DoubleLL<T> implements Iterable<T> {
             i++;
         }
         removeNode(toRemove);
-        changeLength(-1);
     }
 
     // --- Helper Functions --- //
@@ -174,26 +173,26 @@ public class DoubleLL<T> implements Iterable<T> {
     }
 
     /**
-     * Utility function, handle removal logic
+     * Utility function, handle removal logic for all cases
      * @param nodeToRemove Node to remove
      */
     private void removeNode(DLNode<T> nodeToRemove) {
-        if (!nodeToRemove.hasPrevious() && !nodeToRemove.hasNext()) {
+        if (!nodeToRemove.hasPrevious() && !nodeToRemove.hasNext()) {   // only one node
             setHead(null);
             setTail(null);
             setCurrent(null);
-        } else if (!nodeToRemove.hasPrevious()) {
+        } else if (!nodeToRemove.hasPrevious()) {                       // only has next
             setHead(nodeToRemove.getNext());
             nodeToRemove.getNext().setPrevious(null);
             if (getCurrent().equals(nodeToRemove))
                 setCurrent(nodeToRemove.getNext());
-        } else if (!nodeToRemove.hasNext()) {
+        } else if (!nodeToRemove.hasNext()) {                           // only has previous
             setTail(nodeToRemove.getPrevious());
             nodeToRemove.getPrevious().setNext(null);
             if (getCurrent().equals(nodeToRemove))
                 setCurrent(nodeToRemove.getPrevious());
         } else {
-            nodeToRemove.getPrevious().bind(nodeToRemove.getNext());
+            nodeToRemove.getPrevious().bind(nodeToRemove.getNext());    // has next and previous
             if (getCurrent().equals(nodeToRemove))
                 setCurrent(nodeToRemove.getPrevious());
         }
@@ -261,7 +260,7 @@ public class DoubleLL<T> implements Iterable<T> {
             System.out.println(sb);
         }
         else
-            System.out.println("No data.");
+            System.out.println("No data");
     }
 
     /**
