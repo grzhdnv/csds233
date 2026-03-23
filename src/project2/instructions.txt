@@ -1,0 +1,20 @@
+Instructions
+To solve this problem, you must use Java’s Stacks, Queues, and Set classes/collections.
+A Set is a way of collecting data that does not allow for duplicates and allow for easy checks of
+membership. You will store the words from the dictionary into a Set. The dictionary file can be
+found on Canvas “words.txt” Get the starting word from the user and find all words in the
+dictionary that are 1 letter different. For each word that is one letter different create a Stack
+object, push on the start word and the word that is 1 letter different. Enqueue each of these
+stacks onto a Queue (creating a queue of stacks).
+Then dequeue the first item from your queue (this item is a stack). Look at the top word of this
+stack and compare it with the ending word, if they are the same, then your stack contains a
+ladder from the start word to the end word. If the words are not the same, then find all the
+words that are 1 letter away from this new word. For each of these new words you just found,
+create a copy of the current stack and push the new word on it. Then enqueue all the newly
+created stacks onto the queue. You will terminate when the queue is empty or you have found
+the ending word.
+You must keep track of the words in the dictionary that have already been used; otherwise, an
+infinite loop will result.
+Your program should throw an exception (with a helpful error message) if the dictionary file
+cannot be opened or does not exist. The program should also print an error message and quit
+if the user enters a starting or ending word that does not contain 5 letters.
